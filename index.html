@@ -4,16 +4,69 @@
 <head>
   <link rel="stylesheet" href="/styles.css" />
   <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
   <title>XKCD Browser</title>
 </head>
 
 <body>
-  <h1>XKCD Browser</h1>
+  <div class="top-bar">
+    <h1>XKCD Browser</h1>
+  </div>
   <div id="app">
+    <div v-if="loading">
+      <p>Loading...</p>
+    </div>
+    <div v-else>
+      <p>
+        <button v-on:click="previousComic">Previous</button>
+        <button v-on:click="nextComic">Next</button>
+        <button v-on:click="randomComic">Random</button>
+        <button v-on:click="firstComic">First</button>
+        <button v-on:click="lastComic">Last</button>
+      </p>
+      <h2>{{current.safe_title}}</h2>
+      <img v-bind:src="current.img" v-bind:alt="current.alt">
+      <p>{{current.alt}}</p>
+      <p><i>#{{current.num}}, drawn on {{current.day}} {{month}} {{current.year}}</i></p>
+
+      <star-rating v-bind:increment="0.5" active-color="#36454f" inactive-color="#000" v-bind:show-rating="false" @rating-selected ="setRating"></star-rating>
+      <p>Average Rating: {{findAverage}}</p>
+
+      <h3>Add a Comment</h3>
+      <form v-on:submit.prevent="addComment">
+        <input v-model="addedName" placeholder="Name"></p>
+        <textarea v-model="addedComment"></textarea>
+        <br />
+        <button type="submit">Comment</button>
+      </form>
+      <h3>Comments</h3>
+      <div v-for="comment in comments[number]">
+        <hr>
+        <p>{{comment.text}}</p>
+        <p><i>-- {{comment.author}} <br>Posted on: {{comment.date}}, {{comment.time}}</i></p>
+      </div>
+    </div>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"
+  integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ=="
+  crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/vue-star-rating@1.7.0/dist/VueStarRating.umd.min.js" ></script>
   <script src="/script.js"></script>
+
+ <!-- Footer -->
+ <div class="footer-basic">
+  <footer>
+    <div class="social"><a href="https://github.com/BYUCS260/xkcd-browser-zoblod "><i class="icon ion-social-github"></i></a>
+      <p class="copyright">Joseph Industries LLC © 2021</p>
+  </footer>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.bundle.min.js"></script>
+</div>
 </body>
 
 </html>
